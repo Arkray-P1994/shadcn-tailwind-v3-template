@@ -1,9 +1,10 @@
+import MainLayout from "@/components/layout/mainLayout";
+import { ThemeProvider } from "@/components/theme";
 import { Outlet, createRootRoute } from "@tanstack/react-router";
 
 export const Route = createRootRoute({
   component: () => (
     <>
-      <Outlet />
       {/* <TanStackDevtools
         config={{
           position: 'bottom-right',
@@ -15,6 +16,11 @@ export const Route = createRootRoute({
           },
         ]}
       /> */}
+      <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+        <MainLayout>
+          <Outlet />
+        </MainLayout>
+      </ThemeProvider>
     </>
   ),
 });
