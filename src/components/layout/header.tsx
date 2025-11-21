@@ -8,7 +8,7 @@ import { TopNav } from "./top-nav";
 
 const defaultTopNav = [
   { title: "Dashboard", href: "/client" },
-  { title: "Requests", href: "/requests" },
+  { title: "Requests", href: "/requestor/requests" },
   { title: "Vendors", href: "/vendors" },
   { title: "Users", href: "/users" },
 ];

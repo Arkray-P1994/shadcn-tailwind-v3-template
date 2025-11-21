@@ -1,6 +1,7 @@
 import MainLayout from "@/components/layout/mainLayout";
 import { ThemeProvider } from "@/components/theme";
 import { Outlet, createRootRoute } from "@tanstack/react-router";
+import { NuqsAdapter } from "nuqs/adapters/tanstack-router";
 
 export const Route = createRootRoute({
   component: () => (
@@ -18,7 +19,9 @@ export const Route = createRootRoute({
       /> */}
       <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
         <MainLayout>
-          <Outlet />
+          <NuqsAdapter>
+            <Outlet />
+          </NuqsAdapter>
         </MainLayout>
       </ThemeProvider>
     </>

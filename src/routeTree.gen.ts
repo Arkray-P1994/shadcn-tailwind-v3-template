@@ -11,7 +11,9 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as RequestorIndexRouteImport } from './routes/requestor/index'
 import { Route as ClientIndexRouteImport } from './routes/client/index'
+import { Route as RequestorRequestsIndexRouteImport } from './routes/requestor/requests/index'
 
 const AboutRoute = AboutRouteImport.update({
   id: '/about',
@@ -23,9 +25,19 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const RequestorIndexRoute = RequestorIndexRouteImport.update({
+  id: '/requestor/',
+  path: '/requestor/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ClientIndexRoute = ClientIndexRouteImport.update({
   id: '/client/',
   path: '/client/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RequestorRequestsIndexRoute = RequestorRequestsIndexRouteImport.update({
+  id: '/requestor/requests/',
+  path: '/requestor/requests/',
   getParentRoute: () => rootRouteImport,
 } as any)
 
@@ -33,30 +45,44 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/client': typeof ClientIndexRoute
+  '/requestor': typeof RequestorIndexRoute
+  '/requestor/requests': typeof RequestorRequestsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/client': typeof ClientIndexRoute
+  '/requestor': typeof RequestorIndexRoute
+  '/requestor/requests': typeof RequestorRequestsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/client/': typeof ClientIndexRoute
+  '/requestor/': typeof RequestorIndexRoute
+  '/requestor/requests/': typeof RequestorRequestsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/about' | '/client'
+  fullPaths: '/' | '/about' | '/client' | '/requestor' | '/requestor/requests'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about' | '/client'
-  id: '__root__' | '/' | '/about' | '/client/'
+  to: '/' | '/about' | '/client' | '/requestor' | '/requestor/requests'
+  id:
+    | '__root__'
+    | '/'
+    | '/about'
+    | '/client/'
+    | '/requestor/'
+    | '/requestor/requests/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
   ClientIndexRoute: typeof ClientIndexRoute
+  RequestorIndexRoute: typeof RequestorIndexRoute
+  RequestorRequestsIndexRoute: typeof RequestorRequestsIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -75,11 +101,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/requestor/': {
+      id: '/requestor/'
+      path: '/requestor'
+      fullPath: '/requestor'
+      preLoaderRoute: typeof RequestorIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/client/': {
       id: '/client/'
       path: '/client'
       fullPath: '/client'
       preLoaderRoute: typeof ClientIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/requestor/requests/': {
+      id: '/requestor/requests/'
+      path: '/requestor/requests'
+      fullPath: '/requestor/requests'
+      preLoaderRoute: typeof RequestorRequestsIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
@@ -89,6 +129,8 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
   ClientIndexRoute: ClientIndexRoute,
+  RequestorIndexRoute: RequestorIndexRoute,
+  RequestorRequestsIndexRoute: RequestorRequestsIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

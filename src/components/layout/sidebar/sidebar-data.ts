@@ -35,7 +35,7 @@ export const sidebarData: SidebarData = {
       items: [
         {
           title: "Dashboard",
-          url: "/exam/admin",
+          url: "/client",
           icon: LayoutDashboard,
         },
         // {
@@ -45,7 +45,7 @@ export const sidebarData: SidebarData = {
         // },
         {
           title: "Requests",
-          url: "/exam/admin/examinees",
+          url: "/requestor/requests",
           icon: NotebookText,
         },
         {
