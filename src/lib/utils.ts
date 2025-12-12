@@ -52,8 +52,8 @@ export function appendFilesToFormData(
   const files = Array.isArray(value)
     ? value
     : value instanceof FileList
-    ? Array.from(value)
-    : [value];
+      ? Array.from(value)
+      : [value];
 
   files.forEach((file) => {
     formData.append(`attachments`, file, file.name);
@@ -161,4 +161,18 @@ export function getPageNumbers(currentPage: number, totalPages: number) {
   }
 
   return rangeWithDots;
+}
+
+// new
+export function getStatusStyles(status: string) {
+  switch (status.toLowerCase()) {
+    case "submitted":
+      return "bg-green-500/20 text-green-800 border-green-500/30";
+    case "declined":
+      return "bg-destructive/20 text-red-800 border-destructive/30";
+    case "waiting for supplier":
+      return "bg-amber-500/20 text-amber-800 border-amber-500/30";
+    default:
+      return "";
+  }
 }
