@@ -31,7 +31,7 @@ export const sidebarData: SidebarData = {
   ],
   navGroups: [
     {
-      title: "General",
+      title: "Pages",
       items: [
         {
           title: "Dashboard",
@@ -44,15 +44,16 @@ export const sidebarData: SidebarData = {
         //   icon: ListTodo,
         // },
         {
+          title: "Vendors",
+          url: "/requestor/vendors",
+          icon: Container,
+        },
+        {
           title: "Requests",
           url: "/requestor/requests",
           icon: NotebookText,
         },
-        {
-          title: "Vendors",
-          url: "/exam/admin/categories",
-          icon: Container,
-        },
+
         {
           title: "Users",
           url: "/exam/admin/users",

@@ -18,7 +18,6 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 import { Badge } from "@/components/ui/badge";
-import type { NavCollapsible, NavGroup, NavItem, NavLink } from "./types";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -27,8 +26,14 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  type NavCollapsible,
+  type NavItem,
+  type NavLink,
+  type NavGroup as NavGroupProps,
+} from "./types";
 
-export function NavGroup({ title, items }: NavGroup) {
+export function NavGroup({ title, items }: NavGroupProps) {
   const { state, isMobile } = useSidebar();
   const href = useLocation({ select: (location) => location.href });
   return (
