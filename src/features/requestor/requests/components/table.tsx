@@ -1,7 +1,4 @@
-import {
-  DataTablePagination,
-  DataTableToolbar,
-} from "@/components/data-table/index";
+import { DataTableToolbar } from "@/components/data-table/index";
 import {
   Table,
   TableBody,
@@ -26,12 +23,13 @@ import {
 } from "@tanstack/react-table";
 import { useEffect, useState } from "react";
 import { Columns as columns } from "./columns";
+import { Requests } from "./schema";
 import React from "react";
-import { Ledger } from "./data/schema";
+import { DataTablePagination } from "./pagination";
 const route = getRouteApi("/requestor/requests/");
 
 type DataTableProps = {
-  data: Ledger[];
+  data: Requests[];
 };
 declare module "@tanstack/react-table" {
   interface FilterFns {
@@ -174,10 +172,7 @@ export function DataTable({ data }: DataTableProps) {
 
   return (
     <div className="space-y-4 max-sm:has-[div[role='toolbar']]:mb-16 ">
-      <DataTableToolbar
-        table={table}
-        searchPlaceholder="Search by Supplier Name..."
-      />
+      <DataTableToolbar table={table} searchPlaceholder="Search..." />
 
       {/* change: make wrapper `relative overflow-auto` so sticky columns work */}
       <div className="relative overflow-auto rounded-md border">
