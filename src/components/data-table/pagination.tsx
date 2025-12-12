@@ -22,7 +22,11 @@ type DataTablePaginationProps<TData> = {
   url: string;
 };
 
-type RoutePath = "/" | "/requestor/" | "/requestor/requests/";
+type RoutePath =
+  | "/"
+  | "/requestor/"
+  | "/requestor/requests/"
+  | "/requestor/vendors/";
 
 export function DataTablePagination<TData>({
   table,

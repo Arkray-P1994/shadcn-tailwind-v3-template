@@ -13,7 +13,10 @@ import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as RequestorIndexRouteImport } from './routes/requestor/index'
 import { Route as ClientIndexRouteImport } from './routes/client/index'
+import { Route as RequestorVendorsIndexRouteImport } from './routes/requestor/vendors/index'
 import { Route as RequestorRequestsIndexRouteImport } from './routes/requestor/requests/index'
+import { Route as RequestorVendorsIdRouteImport } from './routes/requestor/vendors/$id'
+import { Route as RequestorRequestsCreateRouteImport } from './routes/requestor/requests/create'
 
 const AboutRoute = AboutRouteImport.update({
   id: '/about',
@@ -35,9 +38,24 @@ const ClientIndexRoute = ClientIndexRouteImport.update({
   path: '/client/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const RequestorVendorsIndexRoute = RequestorVendorsIndexRouteImport.update({
+  id: '/requestor/vendors/',
+  path: '/requestor/vendors/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const RequestorRequestsIndexRoute = RequestorRequestsIndexRouteImport.update({
   id: '/requestor/requests/',
   path: '/requestor/requests/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RequestorVendorsIdRoute = RequestorVendorsIdRouteImport.update({
+  id: '/requestor/vendors/$id',
+  path: '/requestor/vendors/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RequestorRequestsCreateRoute = RequestorRequestsCreateRouteImport.update({
+  id: '/requestor/requests/create',
+  path: '/requestor/requests/create',
   getParentRoute: () => rootRouteImport,
 } as any)
 
@@ -46,14 +64,20 @@ export interface FileRoutesByFullPath {
   '/about': typeof AboutRoute
   '/client': typeof ClientIndexRoute
   '/requestor': typeof RequestorIndexRoute
+  '/requestor/requests/create': typeof RequestorRequestsCreateRoute
+  '/requestor/vendors/$id': typeof RequestorVendorsIdRoute
   '/requestor/requests': typeof RequestorRequestsIndexRoute
+  '/requestor/vendors': typeof RequestorVendorsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/client': typeof ClientIndexRoute
   '/requestor': typeof RequestorIndexRoute
+  '/requestor/requests/create': typeof RequestorRequestsCreateRoute
+  '/requestor/vendors/$id': typeof RequestorVendorsIdRoute
   '/requestor/requests': typeof RequestorRequestsIndexRoute
+  '/requestor/vendors': typeof RequestorVendorsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -61,20 +85,42 @@ export interface FileRoutesById {
   '/about': typeof AboutRoute
   '/client/': typeof ClientIndexRoute
   '/requestor/': typeof RequestorIndexRoute
+  '/requestor/requests/create': typeof RequestorRequestsCreateRoute
+  '/requestor/vendors/$id': typeof RequestorVendorsIdRoute
   '/requestor/requests/': typeof RequestorRequestsIndexRoute
+  '/requestor/vendors/': typeof RequestorVendorsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/about' | '/client' | '/requestor' | '/requestor/requests'
+  fullPaths:
+    | '/'
+    | '/about'
+    | '/client'
+    | '/requestor'
+    | '/requestor/requests/create'
+    | '/requestor/vendors/$id'
+    | '/requestor/requests'
+    | '/requestor/vendors'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about' | '/client' | '/requestor' | '/requestor/requests'
+  to:
+    | '/'
+    | '/about'
+    | '/client'
+    | '/requestor'
+    | '/requestor/requests/create'
+    | '/requestor/vendors/$id'
+    | '/requestor/requests'
+    | '/requestor/vendors'
   id:
     | '__root__'
     | '/'
     | '/about'
     | '/client/'
     | '/requestor/'
+    | '/requestor/requests/create'
+    | '/requestor/vendors/$id'
     | '/requestor/requests/'
+    | '/requestor/vendors/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -82,7 +128,10 @@ export interface RootRouteChildren {
   AboutRoute: typeof AboutRoute
   ClientIndexRoute: typeof ClientIndexRoute
   RequestorIndexRoute: typeof RequestorIndexRoute
+  RequestorRequestsCreateRoute: typeof RequestorRequestsCreateRoute
+  RequestorVendorsIdRoute: typeof RequestorVendorsIdRoute
   RequestorRequestsIndexRoute: typeof RequestorRequestsIndexRoute
+  RequestorVendorsIndexRoute: typeof RequestorVendorsIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -115,11 +164,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ClientIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/requestor/vendors/': {
+      id: '/requestor/vendors/'
+      path: '/requestor/vendors'
+      fullPath: '/requestor/vendors'
+      preLoaderRoute: typeof RequestorVendorsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/requestor/requests/': {
       id: '/requestor/requests/'
       path: '/requestor/requests'
       fullPath: '/requestor/requests'
       preLoaderRoute: typeof RequestorRequestsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/requestor/vendors/$id': {
+      id: '/requestor/vendors/$id'
+      path: '/requestor/vendors/$id'
+      fullPath: '/requestor/vendors/$id'
+      preLoaderRoute: typeof RequestorVendorsIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/requestor/requests/create': {
+      id: '/requestor/requests/create'
+      path: '/requestor/requests/create'
+      fullPath: '/requestor/requests/create'
+      preLoaderRoute: typeof RequestorRequestsCreateRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
@@ -130,7 +200,10 @@ const rootRouteChildren: RootRouteChildren = {
   AboutRoute: AboutRoute,
   ClientIndexRoute: ClientIndexRoute,
   RequestorIndexRoute: RequestorIndexRoute,
+  RequestorRequestsCreateRoute: RequestorRequestsCreateRoute,
+  RequestorVendorsIdRoute: RequestorVendorsIdRoute,
   RequestorRequestsIndexRoute: RequestorRequestsIndexRoute,
+  RequestorVendorsIndexRoute: RequestorVendorsIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
