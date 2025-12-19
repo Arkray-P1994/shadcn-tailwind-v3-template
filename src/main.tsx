@@ -9,6 +9,7 @@ import "./index.css";
 
 // Import the generated route tree
 import { routeTree } from "./routeTree.gen";
+import { Toaster } from "./components/ui/sonner";
 
 const hashHistory = createHashHistory();
 
@@ -38,6 +39,7 @@ if (!rootElement.innerHTML) {
   root.render(
     <StrictMode>
       <RouterProvider router={router} />
+      <Toaster />
     </StrictMode>
   );
 }

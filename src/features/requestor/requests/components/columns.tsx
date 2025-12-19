@@ -75,7 +75,7 @@ export const Columns: ColumnDef<Requests>[] = [
       return (
         <div className="flex space-x-2">
           <span className="max-w-32 truncate font-medium sm:max-w-72 md:max-w-[31rem]">
-            {moment(deadline).format("LL")}
+            {moment(deadline).format("ll")}
           </span>
         </div>
       );

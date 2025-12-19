@@ -1,4 +1,3 @@
-import { DataTableToolbar } from "@/components/data-table/index";
 import {
   Table,
   TableBody,
@@ -25,6 +24,7 @@ import { useEffect, useState } from "react";
 import { Columns as columns } from "./columns";
 import { Requests } from "./schema";
 import React from "react";
+import { DataTableToolbar } from "./toolbar";
 import { DataTablePagination } from "./pagination";
 const route = getRouteApi("/requestor/requests/");
 

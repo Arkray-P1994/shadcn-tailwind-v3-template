@@ -53,9 +53,7 @@ export default function VendorId({ id }: { id: number }) {
 
   // Using mock data for demonstration
   const { data, isLoading } = useVendorId({ id });
-  if (data.length >= 0) return <p>invalid vendor</p>;
 
-  if (isLoading) return <p>Loading</p>;
   if (isLoading) {
     return (
       <div className="flex min-h-screen items-center justify-center">
@@ -66,6 +64,7 @@ export default function VendorId({ id }: { id: number }) {
       </div>
     );
   }
+  if (data.length >= 0) return <p>invalid vendor</p>;
 
   const filteredQuotations = data.data.quotations.filter(
     (q: Requests) =>
@@ -168,6 +167,9 @@ export default function VendorId({ id }: { id: number }) {
                       Quotation #
                     </TableHead>
                     <TableHead className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+                      Requestor
+                    </TableHead>
+                    <TableHead className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
                       Purchaser
                     </TableHead>
                     <TableHead className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
@@ -198,6 +200,9 @@ export default function VendorId({ id }: { id: number }) {
                         {quotation.quotation_number}
                       </TableCell>
                       <TableCell className="font-medium">
+                        {quotation.requestor.name}
+                      </TableCell>
+                      <TableCell className="font-medium">
                         {quotation.purchaser}
                       </TableCell>
                       <TableCell className="text-muted-foreground">
@@ -218,16 +223,14 @@ export default function VendorId({ id }: { id: number }) {
                         <div className="flex items-center gap-1.5 text-sm text-muted-foreground">
                           <MapPin className="h-3.5 w-3.5 shrink-0" />
                           <span className="max-w-[180px] truncate">
-                            {quotation.address}
+                            {quotation.address_1}
                           </span>
                         </div>
                       </TableCell>
                       <TableCell>
                         <div className="flex items-center gap-1.5 text-sm">
                           <Calendar className="h-3.5 w-3.5 text-muted-foreground" />
-                          <span>
-                            {moment(quotation.deadline).format("MMMM Do YYYY")}
-                          </span>
+                          <span>{moment(quotation.deadline).format("ll")}</span>
                         </div>
                       </TableCell>
                       <TableCell>

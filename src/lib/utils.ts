@@ -2,16 +2,87 @@ import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { z } from "zod";
 
-export const ledgerFormSchema = z.object({
-  id: z.string().optional(),
-  supplier_name: z.string().min(1, { message: "Supplier is required" }),
-  type: z.string().min(1, { message: "Supplier is required" }),
-  document_number: z.string().min(1, { message: "Supplier is required" }),
-  date: z.date(),
-  attachments: z.array(z.instanceof(File)).optional(),
+export const moqSchema = z.object({
+  moq: z.number().min(0, { message: "MOQ must be greater than 0" }),
+  unit_id: z.number().min(1, { message: "Unit is required" }),
+  remarks: z.string().nullable().optional(),
 });
 
-export type LedgerFormValues = z.infer<typeof ledgerFormSchema>;
+export const itemSchema = z.object({
+  name: z.string().min(1, { message: "Item name is required" }),
+  code: z.string().optional(),
+  moq: z
+    .array(moqSchema)
+    .min(1, { message: "At least 1 MOQ entry is required" }),
+});
+
+export const requestFormSchema = z.object({
+  id: z.string().optional(),
+
+  requestor_id: z.number().min(1, { message: "Requestor is required" }),
+  purchaser: z.string().min(1, { message: "Purchaser is required" }),
+  project: z.string().min(1, { message: "Project is required" }),
+  purpose: z.string().min(1, { message: "Purpose is required" }),
+  deadline: z.date().min(1, { message: "Deadline is required" }),
+  name_1: z.string().nullable().optional(),
+  name_2: z.string().nullable().optional(),
+  address_1: z.string().nullable().optional(),
+  requestor: z.array(z.instanceof(File)).optional(),
+  items: z.array(itemSchema).min(1, { message: "At least 1 item is required" }),
+  vendor_id: z
+    .array(z.number())
+    .min(1, { message: "Please select atleast 1 vendor" }),
+});
+
+export type RequestFormValues = z.infer<typeof requestFormSchema>;
+
+const getCookie = (name: string) => {
+  if (typeof document === "undefined") return null;
+
+  const match = document.cookie.match(new RegExp("(^| )" + name + "=([^;]+)"));
+  return match ? decodeURIComponent(match[2]) : null;
+};
+
+export const fetcher = async (url: string, payload?: any) => {
+  const token = getCookie("bearer_token");
+  const isFormData = payload instanceof FormData;
+
+  // Decode the token if it exists
+  const decodedToken = token ? decodeURIComponent(token) : null;
+
+  const options: RequestInit = {
+    method: payload ? "POST" : "GET",
+    credentials: "include",
+    headers: {
+      accept: "application/json",
+      ...(isFormData ? {} : { "Content-Type": "application/json" }),
+      ...(decodedToken ? { Authorization: `Bearer ${decodedToken}` } : {}),
+    },
+    ...(payload && {
+      body: isFormData ? payload : JSON.stringify(payload),
+    }),
+  };
+
+  // ... rest of your code
+
+  const res = await fetch(url, options);
+
+  let data: any = null;
+  try {
+    data = await res.json();
+  } catch {
+    /* ignore */
+  }
+
+  if (!res.ok) {
+    const msg = data?.error || data?.message || `HTTP ${res.status}`;
+    throw new Error(msg);
+  }
+
+  return data;
+};
+
+//
 
 export const purchasingFormSchecma = z.object({
   id: z.string().optional(),

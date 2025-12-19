@@ -36,7 +36,7 @@ export function DataTablePagination<TData>({
   const { data } = useFetchRequests(search);
 
   const currentPage = table.getState().pagination.pageIndex + 1;
-  const totalPages = data.meta?.total_pages;
+  const totalPages = data.meta?.total_page;
   const pageNumbers = getPageNumbers(currentPage, totalPages);
 
   const canNextPage = totalPages > currentPage;

@@ -6,8 +6,10 @@ import {
   // TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { Link } from "@tanstack/react-router";
 import type { Row } from "@tanstack/react-table";
 import { ExternalLink } from "lucide-react";
+// import { useState } from "react";
 // import TooltipComponent from '@/components/tooltip'
 // import { LedgerSheet } from './forms/view-ledger'
 // import UpdateLedgerForm from './forms/update-ledger-form'
@@ -18,12 +20,9 @@ interface DataTableRowActionsProps<TData extends { id: string | number }> {
   row: Row<TData>;
 }
 
-// export function DataTableRowActions<TData extends { id: string | number }>({
-//   row,
-// }: DataTableRowActionsProps<TData>) {
-export function DataTableRowActions<
-  TData extends { id: string | number },
->({}: DataTableRowActionsProps<TData>) {
+export function DataTableRowActions<TData extends { id: string | number }>({
+  row,
+}: DataTableRowActionsProps<TData>) {
   // const [openSheet, setOpenSheet] = useState(false);
   // const [openFile, setOpenFile] = useState(false);
 
@@ -82,7 +81,12 @@ export function DataTableRowActions<
       </TooltipComponent> */}
 
       {/* <DeleteLedger Id={row.original.id} /> */}
-      <ExternalLink className="h-4 w-4  text-blue-500 cursor-pointer" />
+      <Link
+        to="/requestor/requests/$id"
+        params={{ id: row.original.id.toString() }}
+      >
+        <ExternalLink className="h-4 w-4  text-blue-500 cursor-pointer" />
+      </Link>
     </div>
   );
 }

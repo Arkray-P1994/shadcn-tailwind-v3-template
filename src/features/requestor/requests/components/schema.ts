@@ -8,7 +8,7 @@ export const requestSchema = z.object({
   project: z.string(),
   purpose: z.string(),
   deadline: z.string(),
-  address: z.string(),
+  address_1: z.string(),
   quotation_number: z.string(),
   status: z.string(),
   requestor: z.object({
