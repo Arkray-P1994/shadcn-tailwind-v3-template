@@ -10,12 +10,15 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as AboutRouteImport } from './routes/about'
+import { Route as VendorRouteRouteImport } from './routes/vendor/route'
 import { Route as RequestorRouteRouteImport } from './routes/requestor/route'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as VendorIndexRouteImport } from './routes/vendor/index'
 import { Route as RequestorIndexRouteImport } from './routes/requestor/index'
 import { Route as ClientIndexRouteImport } from './routes/client/index'
 import { Route as RequestorVendorsIndexRouteImport } from './routes/requestor/vendors/index'
 import { Route as RequestorRequestsIndexRouteImport } from './routes/requestor/requests/index'
+import { Route as LoginVendorIndexRouteImport } from './routes/login/vendor/index'
 import { Route as LoginRequestorIndexRouteImport } from './routes/login/requestor/index'
 import { Route as RequestorVendorsIdRouteImport } from './routes/requestor/vendors/$id'
 import { Route as RequestorRequestsCreateRouteImport } from './routes/requestor/requests/create'
@@ -24,6 +27,11 @@ import { Route as RequestorRequestsIdRouteImport } from './routes/requestor/requ
 const AboutRoute = AboutRouteImport.update({
   id: '/about',
   path: '/about',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const VendorRouteRoute = VendorRouteRouteImport.update({
+  id: '/vendor',
+  path: '/vendor',
   getParentRoute: () => rootRouteImport,
 } as any)
 const RequestorRouteRoute = RequestorRouteRouteImport.update({
@@ -35,6 +43,11 @@ const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
+} as any)
+const VendorIndexRoute = VendorIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => VendorRouteRoute,
 } as any)
 const RequestorIndexRoute = RequestorIndexRouteImport.update({
   id: '/',
@@ -55,6 +68,11 @@ const RequestorRequestsIndexRoute = RequestorRequestsIndexRouteImport.update({
   id: '/requests/',
   path: '/requests/',
   getParentRoute: () => RequestorRouteRoute,
+} as any)
+const LoginVendorIndexRoute = LoginVendorIndexRouteImport.update({
+  id: '/login/vendor/',
+  path: '/login/vendor/',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const LoginRequestorIndexRoute = LoginRequestorIndexRouteImport.update({
   id: '/login/requestor/',
@@ -80,13 +98,16 @@ const RequestorRequestsIdRoute = RequestorRequestsIdRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/requestor': typeof RequestorRouteRouteWithChildren
+  '/vendor': typeof VendorRouteRouteWithChildren
   '/about': typeof AboutRoute
   '/client': typeof ClientIndexRoute
   '/requestor/': typeof RequestorIndexRoute
+  '/vendor/': typeof VendorIndexRoute
   '/requestor/requests/$id': typeof RequestorRequestsIdRoute
   '/requestor/requests/create': typeof RequestorRequestsCreateRoute
   '/requestor/vendors/$id': typeof RequestorVendorsIdRoute
   '/login/requestor': typeof LoginRequestorIndexRoute
+  '/login/vendor': typeof LoginVendorIndexRoute
   '/requestor/requests': typeof RequestorRequestsIndexRoute
   '/requestor/vendors': typeof RequestorVendorsIndexRoute
 }
@@ -95,10 +116,12 @@ export interface FileRoutesByTo {
   '/about': typeof AboutRoute
   '/client': typeof ClientIndexRoute
   '/requestor': typeof RequestorIndexRoute
+  '/vendor': typeof VendorIndexRoute
   '/requestor/requests/$id': typeof RequestorRequestsIdRoute
   '/requestor/requests/create': typeof RequestorRequestsCreateRoute
   '/requestor/vendors/$id': typeof RequestorVendorsIdRoute
   '/login/requestor': typeof LoginRequestorIndexRoute
+  '/login/vendor': typeof LoginVendorIndexRoute
   '/requestor/requests': typeof RequestorRequestsIndexRoute
   '/requestor/vendors': typeof RequestorVendorsIndexRoute
 }
@@ -106,13 +129,16 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/requestor': typeof RequestorRouteRouteWithChildren
+  '/vendor': typeof VendorRouteRouteWithChildren
   '/about': typeof AboutRoute
   '/client/': typeof ClientIndexRoute
   '/requestor/': typeof RequestorIndexRoute
+  '/vendor/': typeof VendorIndexRoute
   '/requestor/requests/$id': typeof RequestorRequestsIdRoute
   '/requestor/requests/create': typeof RequestorRequestsCreateRoute
   '/requestor/vendors/$id': typeof RequestorVendorsIdRoute
   '/login/requestor/': typeof LoginRequestorIndexRoute
+  '/login/vendor/': typeof LoginVendorIndexRoute
   '/requestor/requests/': typeof RequestorRequestsIndexRoute
   '/requestor/vendors/': typeof RequestorVendorsIndexRoute
 }
@@ -121,13 +147,16 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/requestor'
+    | '/vendor'
     | '/about'
     | '/client'
     | '/requestor/'
+    | '/vendor/'
     | '/requestor/requests/$id'
     | '/requestor/requests/create'
     | '/requestor/vendors/$id'
     | '/login/requestor'
+    | '/login/vendor'
     | '/requestor/requests'
     | '/requestor/vendors'
   fileRoutesByTo: FileRoutesByTo
@@ -136,23 +165,28 @@ export interface FileRouteTypes {
     | '/about'
     | '/client'
     | '/requestor'
+    | '/vendor'
     | '/requestor/requests/$id'
     | '/requestor/requests/create'
     | '/requestor/vendors/$id'
     | '/login/requestor'
+    | '/login/vendor'
     | '/requestor/requests'
     | '/requestor/vendors'
   id:
     | '__root__'
     | '/'
     | '/requestor'
+    | '/vendor'
     | '/about'
     | '/client/'
     | '/requestor/'
+    | '/vendor/'
     | '/requestor/requests/$id'
     | '/requestor/requests/create'
     | '/requestor/vendors/$id'
     | '/login/requestor/'
+    | '/login/vendor/'
     | '/requestor/requests/'
     | '/requestor/vendors/'
   fileRoutesById: FileRoutesById
@@ -160,9 +194,11 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   RequestorRouteRoute: typeof RequestorRouteRouteWithChildren
+  VendorRouteRoute: typeof VendorRouteRouteWithChildren
   AboutRoute: typeof AboutRoute
   ClientIndexRoute: typeof ClientIndexRoute
   LoginRequestorIndexRoute: typeof LoginRequestorIndexRoute
+  LoginVendorIndexRoute: typeof LoginVendorIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -172,6 +208,13 @@ declare module '@tanstack/react-router' {
       path: '/about'
       fullPath: '/about'
       preLoaderRoute: typeof AboutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/vendor': {
+      id: '/vendor'
+      path: '/vendor'
+      fullPath: '/vendor'
+      preLoaderRoute: typeof VendorRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/requestor': {
@@ -187,6 +230,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/vendor/': {
+      id: '/vendor/'
+      path: '/'
+      fullPath: '/vendor/'
+      preLoaderRoute: typeof VendorIndexRouteImport
+      parentRoute: typeof VendorRouteRoute
     }
     '/requestor/': {
       id: '/requestor/'
@@ -215,6 +265,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/requestor/requests'
       preLoaderRoute: typeof RequestorRequestsIndexRouteImport
       parentRoute: typeof RequestorRouteRoute
+    }
+    '/login/vendor/': {
+      id: '/login/vendor/'
+      path: '/login/vendor'
+      fullPath: '/login/vendor'
+      preLoaderRoute: typeof LoginVendorIndexRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/login/requestor/': {
       id: '/login/requestor/'
@@ -269,12 +326,26 @@ const RequestorRouteRouteWithChildren = RequestorRouteRoute._addFileChildren(
   RequestorRouteRouteChildren,
 )
 
+interface VendorRouteRouteChildren {
+  VendorIndexRoute: typeof VendorIndexRoute
+}
+
+const VendorRouteRouteChildren: VendorRouteRouteChildren = {
+  VendorIndexRoute: VendorIndexRoute,
+}
+
+const VendorRouteRouteWithChildren = VendorRouteRoute._addFileChildren(
+  VendorRouteRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   RequestorRouteRoute: RequestorRouteRouteWithChildren,
+  VendorRouteRoute: VendorRouteRouteWithChildren,
   AboutRoute: AboutRoute,
   ClientIndexRoute: ClientIndexRoute,
   LoginRequestorIndexRoute: LoginRequestorIndexRoute,
+  LoginVendorIndexRoute: LoginVendorIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

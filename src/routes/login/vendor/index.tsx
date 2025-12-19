@@ -1,10 +1,11 @@
 import logo from "@/assets/arkray.png";
+import { ModeToggle } from "@/components/toggle";
 import { LoginForm } from "@/components/auth/login";
 import { createFileRoute } from "@tanstack/react-router";
 // import { ThemeSwitch } from '@/components/theme-switch'
 // import { useUser } from '@/api/fetch-user'
 
-export const Route = createFileRoute("/login/requestor/")({
+export const Route = createFileRoute("/login/vendor/")({
   component: LoginPage,
 });
 
@@ -28,13 +29,15 @@ export default function LoginPage() {
         </div>
         <div className="flex flex-1 items-center justify-center">
           <div className="w-full max-w-xs">
-            <LoginForm type={"requestor"} />
+            <LoginForm type={"vendor"} />
           </div>
         </div>
       </div>
       <div className="bg-muted relative hidden lg:flex items-center justify-center">
         {/* ThemeSwitch positioned top-right */}
-        <div className="absolute top-2 right-2">{/* <ThemeSwitch /> */}</div>
+        <div className="absolute top-2 right-2">
+          <ModeToggle />
+        </div>
 
         {/* Centered logo */}
         <img className="h-40 w-110 object-cover" src={logo} alt="Image" />
