@@ -1,0 +1,14 @@
+import { createFileRoute, Outlet } from "@tanstack/react-router";
+
+export const Route = createFileRoute("/requestor/_layout")({
+  component: RequestorLayout,
+});
+
+function RequestorLayout() {
+  return (
+    <div className="flex gap-8">
+      <div>LAYOUT</div>
+      <Outlet />
+    </div>
+  );
+}

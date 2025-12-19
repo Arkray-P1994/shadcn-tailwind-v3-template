@@ -1,0 +1,13 @@
+import { AuthProvider, RequireAuth } from "@/components/auth/auth";
+import { Dashboard } from "@/features/dashboard";
+import { createFileRoute } from "@tanstack/react-router";
+
+export const Route = createFileRoute("/requestor/")({
+  component: (
+    <AuthProvider>
+      <RequireAuth>
+        <Dashboard />
+      </RequireAuth>
+    </AuthProvider>
+  ),
+});
