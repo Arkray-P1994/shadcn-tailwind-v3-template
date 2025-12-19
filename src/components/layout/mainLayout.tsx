@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils";
 import { Outlet } from "@tanstack/react-router";
 // import { Navbar } from "./nav";
 import { getCookie } from "@/lib/cookies";
+import { vendorSidebarData } from "./sidebar/venodr-sidebar-data";
 
 interface MainLayoutProps {
   children: React.ReactNode;
@@ -18,7 +19,7 @@ export default function MainLayout({ children }: MainLayoutProps) {
   return (
     <LayoutProvider>
       <SidebarProvider defaultOpen={defaultOpen}>
-        <AppSidebar />
+        <AppSidebar sidebarData={vendorSidebarData} />
         <SidebarInset
           className={cn(
             // Set content container, so we can use container queries

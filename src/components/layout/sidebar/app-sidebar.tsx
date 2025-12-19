@@ -1,4 +1,3 @@
-import { useLayout } from "@/context/layout-provider";
 import {
   Sidebar,
   SidebarContent,
@@ -6,14 +5,17 @@ import {
   SidebarHeader,
   SidebarRail,
 } from "@/components/ui/sidebar";
+import { useLayout } from "@/context/layout-provider";
 // import { AppTitle } from './app-title'
 // import { NavGroup } from "./nav-group";
 // import { NavUser } from "./nav-user";
-import { sidebarData } from "./sidebar-data";
 import { NavGroup } from "./nav-group";
 import { NavUser } from "./nav-user";
-
-export function AppSidebar() {
+import { SidebarData } from "./types";
+interface AppSidebarProps {
+  sidebarData: SidebarData;
+}
+export function AppSidebar({ sidebarData }: AppSidebarProps) {
   const { collapsible, variant } = useLayout();
   return (
     <Sidebar collapsible={collapsible} variant={variant}>

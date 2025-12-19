@@ -47,7 +47,7 @@ export function NavUser({ user }: NavUserProps) {
                 <Avatar className="h-8 w-8 rounded-lg">
                   <AvatarImage src={user.avatar} alt={user.name} />
                   <AvatarFallback className="rounded-lg">
-                    {data.username.slice(0, 1).toUpperCase()}
+                    {data?.username?.slice(0, 1).toUpperCase()}
                   </AvatarFallback>
                 </Avatar>
                 <div className="grid flex-1 text-start text-sm leading-tight">
@@ -71,7 +71,7 @@ export function NavUser({ user }: NavUserProps) {
                     <AvatarImage src={user.avatar} alt={user.name} />
                     <AvatarFallback className="rounded-lg">
                       {" "}
-                      {data.username.slice(0, 1).toUpperCase()}
+                      {data?.username?.slice(0, 1).toUpperCase()}
                     </AvatarFallback>
                   </Avatar>
                   <div className="grid flex-1 text-start text-sm leading-tight">
