@@ -1,14 +1,13 @@
-// import { useUser } from "@/api/fetch-user";
 import { useFetchUser } from "@/api/fetch-user";
 import { useRouter } from "@tanstack/react-router";
 import React, { createContext, useContext, useEffect, useMemo } from "react";
-// import DataTableSkeleton from "../skeleton/data-table-skeleton";
 
 /** ---------- Types ---------- */
 export interface User {
   id: string;
   username: string;
   email: string;
+  vendor_type: "requestor" | "vendor";
 }
 
 export interface AuthState {
@@ -18,11 +17,14 @@ export interface AuthState {
   error: string | null;
 }
 
-/** Possible shapes your hook or API might return */
+/** * Updated UserLike to include 'ref_type' from your API JSON
+ */
 type UserLike = Partial<User> & {
   username?: string;
-  email?: string;
-  id?: string;
+  email?: string | null;
+  id?: string | number;
+  vendor_type?: string;
+  ref_type?: string; // Added to match your API response
 };
 
 type RawSuccessNested = { status: "success"; user: UserLike };
@@ -41,16 +43,17 @@ type RawUser =
 function toUser(candidate?: UserLike | null): User | null {
   if (!candidate) return null;
 
-  // If your backend doesn’t guarantee id/email yet, you can decide to reject or coerce.
-  // Here we coerce with sensible fallbacks so the app can still run.
-  const id = candidate.id ?? "unknown";
+  const id = String(candidate.id ?? "unknown");
   const username = candidate.username ?? "";
   const email = candidate.email ?? "";
 
-  // If you prefer strictness, replace with a guard:
-  // if (!candidate.id || !candidate.email || !candidate.username) return null;
+  /**
+   * FIX: Check for 'ref_type' first (API) then 'vendor_type' (internal)
+   */
+  const rawRole = candidate.ref_type || candidate.vendor_type;
+  const vendor_type = rawRole === "vendor" ? "vendor" : "requestor";
 
-  return { id, username, email };
+  return { id, username, email, vendor_type };
 }
 
 function normalizeUser(raw: RawUser): {
@@ -60,19 +63,16 @@ function normalizeUser(raw: RawUser): {
   if (!raw) return { user: null, err: null };
 
   if (typeof raw === "object" && "status" in raw) {
-    // Handle success (nested or flat)
     if (raw.status === "success") {
       const candidate =
         (raw as RawSuccessNested).user ?? (raw as RawSuccessFlat);
       return { user: toUser(candidate), err: null };
     }
-    // Handle error shape
     if (raw.status === "error") {
       return { user: null, err: (raw as RawError).message ?? null };
     }
   }
 
-  // Plain user object already
   return { user: toUser(raw as UserLike), err: null };
 }
 
@@ -129,27 +129,53 @@ export function useAuth() {
   return ctx;
 }
 
+/** ---------- Role-aware RequireAuth ---------- */
+interface RequireAuthProps {
+  children: React.ReactNode;
+  allowedVendorTypes?: ("requestor" | "vendor")[];
+  loading?: React.ReactNode;
+}
+
 export function RequireAuth({
   children,
-  loading = (
-    <div className="p-4">
-      {/* <DataTableSkeleton /> */}
-      <p>loading</p>
-    </div>
-  ),
-}: {
-  children: React.ReactNode;
-  loading?: React.ReactNode;
-}) {
-  const { isLoading, isAuthenticated } = useAuth();
+  allowedVendorTypes,
+  loading = <p>loading...</p>,
+}: RequireAuthProps) {
+  const { isLoading, isAuthenticated, user } = useAuth();
   const router = useRouter();
+
   useEffect(() => {
-    if (!isLoading && !isAuthenticated) {
-      router.navigate({ to: "/login/requestor" });
+    if (!isLoading) {
+      // 1. Not logged in -> Go to login
+      if (!isAuthenticated) {
+        router.navigate({ to: "/login/requestor" });
+        return;
+      }
+
+      // 2. Logged in but wrong role -> Redirect to their respective dashboard
+      if (
+        allowedVendorTypes &&
+        user &&
+        !allowedVendorTypes.includes(user.vendor_type)
+      ) {
+        const redirectTo =
+          user.vendor_type === "vendor" ? "/vendor" : "/requestor";
+        router.navigate({ to: redirectTo });
+      }
     }
-  }, [isLoading, isAuthenticated, router]);
+  }, [isLoading, isAuthenticated, user, allowedVendorTypes, router]);
 
   if (isLoading) return <>{loading}</>;
   if (!isAuthenticated) return null;
+
+  // Final role check before rendering children
+  if (
+    allowedVendorTypes &&
+    user &&
+    !allowedVendorTypes.includes(user.vendor_type)
+  ) {
+    return null;
+  }
+
   return <>{children}</>;
 }

@@ -1,6 +1,7 @@
 import { showErrorToast } from "@/components/toast/error-toast";
 import { showSuccessToast } from "@/components/toast/success-toast";
 import { baseUrl } from "@/lib/base-url";
+import { User } from "@/types/type";
 import { useRouter } from "@tanstack/react-router";
 // import { useRouter } from "@tanstack/react-router";
 import useSWRMutation from "swr/mutation";
@@ -37,13 +38,18 @@ export const login = (url: string, { arg }: { arg: any }) => {
   return fetcher(url, arg);
 };
 
-export function useLogin() {
+export function useLogin({ type }: User) {
   const router = useRouter();
 
   return useSWRMutation(`${baseUrl}/api/login/`, login, {
     onSuccess: () => {
       showSuccessToast("Login successfully!");
-      router.navigate({ to: "/requestor" });
+
+      if (type === "requestor") {
+        router.navigate({ to: "/requestor" });
+      } else {
+        router.navigate({ to: "/vendor" });
+      }
     },
     onError: (err: unknown) => {
       const message = err instanceof Error ? err.message : "Failed to login";

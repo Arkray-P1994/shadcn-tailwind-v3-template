@@ -17,6 +17,7 @@ import { Input } from "@/components/ui/input";
 import { EyeIcon, EyeOffIcon } from "lucide-react";
 import { useState } from "react";
 import { useLogin } from "./actions/login";
+import { User } from "@/types/type";
 // import { useUser } from "@/api/fetch-employee";
 
 const FormSchema = z.object({
@@ -28,13 +29,13 @@ const FormSchema = z.object({
   }),
 });
 
-export function LoginForm() {
+export function LoginForm({ type }: User) {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: { username: "superadmin", password: "arkraysuperadmin" },
   });
 
-  const { trigger } = useLogin();
+  const { trigger } = useLogin({ type });
   // const { user } = useUser();
 
   // if (user.success === true) {

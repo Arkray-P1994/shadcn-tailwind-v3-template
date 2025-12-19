@@ -1,4 +1,5 @@
 import { useFetchUser } from "@/api/fetch-user";
+import { useLogout } from "@/components/auth/actions/logout";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
@@ -16,9 +17,7 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar";
-import { useLogout } from "@/features/requestor/auth/actions/logout";
 import { ChevronsUpDown } from "lucide-react";
-// import { SignOutDialog } from '@/components/sign-out-dialog'
 
 type NavUserProps = {
   user: {
@@ -29,10 +28,10 @@ type NavUserProps = {
 };
 
 export function NavUser({ user }: NavUserProps) {
-  const { trigger: logout, isMutating } = useLogout();
   const { isMobile } = useSidebar();
   // const [setOpen] = useDialogState()
   const { user: data, isLoading } = useFetchUser();
+  const { trigger: logout, isMutating } = useLogout({ type: data.ref_type });
 
   if (isLoading) return <p>loading</p>;
   return (
