@@ -1,7 +1,6 @@
 import { baseUrl } from "@/lib/base-url";
+import { fetcher } from "@/lib/utils";
 import useSWR from "swr";
-
-const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 export function useFetchVendor({
   page,
@@ -14,13 +13,13 @@ export function useFetchVendor({
 
   if (page) params.append("page", page);
   if (limit) params.append("limit", limit);
-  if (filter) params.append("search", filter);
+  if (filter) params.append("filter", filter);
   if (sort) params.append("sort", sort);
 
   const url =
     params.toString().length > 0
-      ? `${baseUrl}/data.json?${params.toString()}`
-      : `${baseUrl}/data.json`;
+      ? `${baseUrl}/api/requestors/vendors?${params.toString()}`
+      : `${baseUrl}/api/requestors/vendors`;
 
   const { data, error, isLoading } = useSWR(url, fetcher, {
     keepPreviousData: true,

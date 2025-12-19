@@ -1,7 +1,6 @@
 import { baseUrl } from "@/lib/base-url";
+import { fetcher } from "@/lib/utils";
 import useSWR from "swr";
-
-const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 export function useFetchRequests({
   page,
@@ -14,13 +13,13 @@ export function useFetchRequests({
 
   if (page) params.append("page", page);
   if (limit) params.append("limit", limit);
-  if (filter) params.append("search", filter);
+  if (filter) params.append("filter", filter);
   if (sort) params.append("sort", sort);
 
   const url =
     params.toString().length > 0
-      ? `${baseUrl}/quotation/index.json?${params.toString()}`
-      : `${baseUrl}/quotation/index.json`;
+      ? `${baseUrl}/api/requestors/quotations?${params.toString()}`
+      : `${baseUrl}/api/requestors/quotations`;
 
   const { data, error, isLoading } = useSWR(url, fetcher, {
     keepPreviousData: true,
