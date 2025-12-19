@@ -1,9 +1,4 @@
-import {
-  Container,
-  LayoutDashboard,
-  NotebookText,
-  UserCog,
-} from "lucide-react";
+import { Container, LayoutDashboard, NotebookText } from "lucide-react";
 import type { SidebarData } from "./types";
 
 export const sidebarData: SidebarData = {
@@ -35,7 +30,7 @@ export const sidebarData: SidebarData = {
       items: [
         {
           title: "Dashboard",
-          url: "/client",
+          url: "/requestor",
           icon: LayoutDashboard,
         },
         // {
@@ -54,11 +49,11 @@ export const sidebarData: SidebarData = {
           icon: NotebookText,
         },
 
-        {
-          title: "Users",
-          url: "/exam/admin/users",
-          icon: UserCog,
-        },
+        // {
+        //   title: "Users",
+        //   url: "/exam/admin/users",
+        //   icon: UserCog,
+        // },
       ],
     },
   ],

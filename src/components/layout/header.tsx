@@ -7,10 +7,10 @@ import { TopNav } from "./top-nav";
 // import { useRouter } from "@tanstack/react-router";
 
 const defaultTopNav = [
-  { title: "Dashboard", href: "/client" },
-  { title: "Vendors", href: "/vendors" },
+  { title: "Dashboard", href: "/requestor" },
+  { title: "Vendors", href: "/requestor/vendors" },
   { title: "Requests", href: "/requestor/requests" },
-  { title: "Users", href: "/users" },
+  // { title: "Users", href: "/users" },
 ];
 
 type HeaderProps = React.HTMLAttributes<HTMLElement> & {

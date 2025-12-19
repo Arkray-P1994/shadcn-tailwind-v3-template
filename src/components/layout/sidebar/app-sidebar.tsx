@@ -11,6 +11,7 @@ import {
 // import { NavUser } from "./nav-user";
 import { sidebarData } from "./sidebar-data";
 import { NavGroup } from "./nav-group";
+import { NavUser } from "./nav-user";
 
 export function AppSidebar() {
   const { collapsible, variant } = useLayout();
@@ -28,7 +29,9 @@ export function AppSidebar() {
           <NavGroup items={[]} key={props.title} {...props} />
         ))}
       </SidebarContent>
-      <SidebarFooter>{/* <NavUser /> */}</SidebarFooter>
+      <SidebarFooter>
+        <NavUser user={sidebarData.user} />
+      </SidebarFooter>
       <SidebarRail />
     </Sidebar>
   );
