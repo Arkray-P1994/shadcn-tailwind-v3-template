@@ -1,0 +1,44 @@
+import logo from "@/assets/arkray.png";
+import { LoginForm } from "@/features/requestor/auth/login";
+import { createFileRoute } from "@tanstack/react-router";
+// import { ThemeSwitch } from '@/components/theme-switch'
+// import { useUser } from '@/api/fetch-user'
+
+export const Route = createFileRoute("/login/requestor/")({
+  component: LoginPage,
+});
+
+export default function LoginPage() {
+  // const { user } = useUser()
+  // const router = useRouter()
+  // if (user.success === false) {
+  //   router.navigate({ to: '/exam/login' })
+  // }
+  return (
+    <div className="grid min-h-screen lg:grid-cols-2">
+      <div className="flex flex-col gap-4 p-6 md:p-10">
+        <div className="flex justify-center gap-2 md:justify-start">
+          <a href="#" className="flex items-center gap-2 font-medium">
+            <img
+              className="h-10 w-auto object-contain"
+              src={logo}
+              alt="Arkray Logo"
+            />
+          </a>
+        </div>
+        <div className="flex flex-1 items-center justify-center">
+          <div className="w-full max-w-xs">
+            <LoginForm />
+          </div>
+        </div>
+      </div>
+      <div className="bg-muted relative hidden lg:flex items-center justify-center">
+        {/* ThemeSwitch positioned top-right */}
+        <div className="absolute top-2 right-2">{/* <ThemeSwitch /> */}</div>
+
+        {/* Centered logo */}
+        <img className="h-40 w-110 object-cover" src={logo} alt="Image" />
+      </div>
+    </div>
+  );
+}
