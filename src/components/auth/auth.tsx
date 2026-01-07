@@ -1,5 +1,6 @@
 import { useFetchUser } from "@/api/fetch-user";
 import { useRouter } from "@tanstack/react-router";
+import { Loader } from "lucide-react";
 import React, { createContext, useContext, useEffect, useMemo } from "react";
 
 /** ---------- Types ---------- */
@@ -139,7 +140,6 @@ interface RequireAuthProps {
 export function RequireAuth({
   children,
   allowedVendorTypes,
-  loading = <p>loading...</p>,
 }: RequireAuthProps) {
   const { isLoading, isAuthenticated, user } = useAuth();
   const router = useRouter();
@@ -165,7 +165,12 @@ export function RequireAuth({
     }
   }, [isLoading, isAuthenticated, user, allowedVendorTypes, router]);
 
-  if (isLoading) return <>{loading}</>;
+  if (isLoading)
+    return (
+      <div className="min-h-screen min-w-screen flex justify-center items-center">
+        <Loader className="animate-spin" />
+      </div>
+    );
   if (!isAuthenticated) return null;
 
   // Final role check before rendering children

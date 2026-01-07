@@ -1,5 +1,6 @@
 import { useFetchUser } from "@/api/fetch-user";
 import { useLogout } from "@/components/auth/actions/logout";
+import Spinner from "@/components/loader";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
@@ -33,7 +34,7 @@ export function NavUser({ user }: NavUserProps) {
   const { user: data, isLoading } = useFetchUser();
   const { trigger: logout, isMutating } = useLogout({ type: data.ref_type });
 
-  if (isLoading) return <p>loading</p>;
+  if (isLoading) return <Spinner />;
   return (
     <>
       <SidebarMenu>

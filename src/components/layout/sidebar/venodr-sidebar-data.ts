@@ -45,7 +45,7 @@ export const vendorSidebarData: SidebarData = {
         // },
         {
           title: "Requests",
-          url: "/requestor/requests",
+          url: "/vendor/requests",
           icon: NotebookText,
         },
 

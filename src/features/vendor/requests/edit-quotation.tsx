@@ -1,8 +1,14 @@
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
+import { Link } from "@tanstack/react-router";
 import { format } from "date-fns";
 import {
   ArrowLeft,
   Building2,
   Calendar,
+  Download,
   ExternalLink,
   FileText,
   Hash,
@@ -11,15 +17,10 @@ import {
   MapPin,
   Package,
   Paperclip,
+  Printer,
   ShieldCheck,
   User,
 } from "lucide-react";
-
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
-import { Link } from "@tanstack/react-router";
 
 // --- Types (Preserved) ---
 type Unit = { id: number; name: string; description: string };
@@ -86,7 +87,7 @@ type QuotationData = {
   };
 };
 
-const QuotationRequestSlug = ({ data }: { data: QuotationData }) => {
+const EditQuotationRequestSlug = ({ data }: { data: QuotationData }) => {
   const requestorFiles =
     data.attachments?.filter((f) => f.category === "requestor") || [];
   const vendorFiles =
@@ -126,7 +127,7 @@ const QuotationRequestSlug = ({ data }: { data: QuotationData }) => {
       <div className="sticky top-0 z-30 bg-card/80 backdrop-blur-xl border-b border-border h-14 flex items-center shadow-lg shadow-primary/5">
         <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <Link to={"/vendor/requests"}>
+            <Link to={"/requestor/requests"}>
               <Button
                 variant="ghost"
                 size="icon"
@@ -148,7 +149,7 @@ const QuotationRequestSlug = ({ data }: { data: QuotationData }) => {
             </div>
           </div>
 
-          {/* <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2">
             <Button
               variant="outline"
               size="sm"
@@ -164,7 +165,7 @@ const QuotationRequestSlug = ({ data }: { data: QuotationData }) => {
               <Download className="h-3.5 w-3.5 mr-1.5" />
               Export PDF
             </Button>
-          </div> */}
+          </div>
         </div>
       </div>
 
@@ -196,12 +197,6 @@ const QuotationRequestSlug = ({ data }: { data: QuotationData }) => {
                     {data.items.length}
                   </Badge>
                 </h3>
-                <Link
-                  to={`/vendor/requests/edit/$id`}
-                  params={{ id: data.id.toString() }}
-                >
-                  <Button size="sm">Edit Details</Button>
-                </Link>
               </div>
 
               {data.items.map((item, index) => (
@@ -468,4 +463,4 @@ const QuotationRequestSlug = ({ data }: { data: QuotationData }) => {
   );
 };
 
-export default QuotationRequestSlug;
+export default EditQuotationRequestSlug;

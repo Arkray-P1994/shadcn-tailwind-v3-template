@@ -3,7 +3,7 @@ import Spinner from "@/components/loader";
 import QuotationRequestSlug from "@/features/requestor/requests/$id";
 import { createFileRoute } from "@tanstack/react-router";
 
-export const Route = createFileRoute("/requestor/requests/$id")({
+export const Route = createFileRoute("/vendor/requests/$id")({
   loader: async ({ params }) => {
     const id = +params.id;
     if (!id) {
@@ -16,7 +16,7 @@ export const Route = createFileRoute("/requestor/requests/$id")({
 
 function RouteComponent() {
   const id = Route.useLoaderData();
-  const { data, isLoading } = useQuotationID({ id, type: "requestor" });
+  const { data, isLoading } = useQuotationID({ id, type: "vendor" });
 
   //   if (isLoading) return <VendorDetailSkeleton />;
 

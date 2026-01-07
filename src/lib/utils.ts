@@ -36,6 +36,29 @@ export const requestFormSchema = z.object({
 
 export type RequestFormValues = z.infer<typeof requestFormSchema>;
 
+// for vendor price submittion
+export const editMoqSchema = z.object({
+  id: z.number().optional(),
+  moq: z.coerce.number().optional(),
+  price: z.coerce.number().min(1, { message: "Price must be greater than 0" }),
+  currency_id: z.number().min(1, { message: "Currency is required" }),
+  leadtime: z.coerce.number().min(0, { message: "Leadtime is required" }),
+});
+
+export const editItemSchema = z.object({
+  id: z.number().optional(),
+  moq: z.array(editMoqSchema),
+  name: z.string().optional(),
+  code: z.string().nullable().optional(),
+});
+
+export const itemFormSchema = z.object({
+  id: z.number().optional(),
+  items: z.array(editItemSchema),
+});
+
+export type ItemFormValues = z.infer<typeof itemFormSchema>;
+
 const getCookie = (name: string) => {
   if (typeof document === "undefined") return null;
 

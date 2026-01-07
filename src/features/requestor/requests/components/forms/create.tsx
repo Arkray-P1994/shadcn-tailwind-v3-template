@@ -49,6 +49,7 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { useFetchFormSettings } from "@/api/fetch-form-settings";
 import { ImportDialog } from "../import-data-button";
+import Spinner from "@/components/loader";
 
 const purpose = [
   { name: "New Purchase" },
@@ -58,7 +59,9 @@ const purpose = [
 ];
 
 export function LedgerCreateForm() {
-  const { data, isLoading: formSettingsIsLoading } = useFetchFormSettings();
+  const { data, isLoading: formSettingsIsLoading } = useFetchFormSettings({
+    type: "requestor",
+  });
 
   const { user } = useFetchUser();
   const { trigger } = useCreateQuotation();
@@ -155,7 +158,7 @@ export function LedgerCreateForm() {
       description: `${formattedItems.length} items imported successfully.`,
     });
   };
-  if (formSettingsIsLoading) return <p>loading</p>;
+  if (formSettingsIsLoading) return <Spinner />;
 
   async function onSubmit(data: RequestFormValues) {
     const formData = new FormData();
