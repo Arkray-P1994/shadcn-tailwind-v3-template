@@ -15,11 +15,9 @@ import {
   useForm,
   UseFormReturn,
 } from "react-hook-form";
-// import { toast } from "sonner";
+import { toast } from "sonner";
 import { useEditQuotation } from "../../actions/create";
-import Spinner from "@/components/loader";
-// import { ImportDialog } from "../import-data-button";
-// import { exportItemsToXlsx } from "../export-items";
+import { ImportDialog } from "../import-data-button";
 interface EditQuotationFormProps {
   data: {
     id: number;
@@ -47,7 +45,7 @@ interface EditQuotationFormProps {
 
 export function EditQuotationForm({ data }: EditQuotationFormProps) {
   const { data: formSetting, isLoading: formSettingsIsLoading } =
-    useFetchFormSettings({ type: "vendor" });
+    useFetchFormSettings({ type: "requestor" });
 
   const { trigger } = useEditQuotation({ id: data.id });
 
@@ -56,61 +54,57 @@ export function EditQuotationForm({ data }: EditQuotationFormProps) {
     defaultValues: { items: data.items },
   });
 
-  const {
-    fields: itemFields,
-    // ,
-    //  append: appendItem
-  } = useFieldArray({
+  const { fields: itemFields, append: appendItem } = useFieldArray({
     control: form.control,
     name: "items",
   });
 
-  // const handleImportData = (importedData: any[]) => {
-  //   const invalidUnitsSet = new Set<string>();
+  const handleImportData = (importedData: any[]) => {
+    const invalidUnitsSet = new Set<string>();
 
-  //   const formattedItems = importedData.map((item) => {
-  //     const formattedMoqs = item.moqs.map((m: any) => {
-  //       const importedUnitName = String(m.unit || "")
-  //         .trim()
-  //         .toLowerCase();
-  //       const matchedUnit = formSetting?.data.units.find(
-  //         (u: any) => u.name.toLowerCase() === importedUnitName
-  //       );
+    const formattedItems = importedData.map((item) => {
+      const formattedMoqs = item.moqs.map((m: any) => {
+        const importedUnitName = String(m.unit || "")
+          .trim()
+          .toLowerCase();
+        const matchedUnit = formSetting?.data.units.find(
+          (u: any) => u.name.toLowerCase() === importedUnitName
+        );
 
-  //       if (!matchedUnit) {
-  //         invalidUnitsSet.add(m.unit || "Unknown/Empty");
-  //       }
+        if (!matchedUnit) {
+          invalidUnitsSet.add(m.unit || "Unknown/Empty");
+        }
 
-  //       return {
-  //         moq: Number(m.quantity) || 0,
-  //         unit_id: matchedUnit ? matchedUnit.id : 0,
-  //         remarks: m.description || "",
-  //       };
-  //     });
+        return {
+          moq: Number(m.quantity) || 0,
+          unit_id: matchedUnit ? matchedUnit.id : 0,
+          remarks: m.description || "",
+        };
+      });
 
-  //     return {
-  //       name: item.item,
-  //       code: item.code,
-  //       moq: formattedMoqs,
-  //     };
-  //   });
+      return {
+        name: item.item,
+        code: item.code,
+        moq: formattedMoqs,
+      };
+    });
 
-  //   if (invalidUnitsSet.size > 0) {
-  //     const invalidList = Array.from(invalidUnitsSet).join(", ");
-  //     toast.error("Import Cancelled: Invalid Units Found", {
-  //       description: `Units not in system: "${invalidList}".`,
-  //       style: { borderColor: "red", color: "red" },
-  //     });
-  //     return;
-  //   }
+    if (invalidUnitsSet.size > 0) {
+      const invalidList = Array.from(invalidUnitsSet).join(", ");
+      toast.error("Import Cancelled: Invalid Units Found", {
+        description: `Units not in system: "${invalidList}".`,
+        style: { borderColor: "red", color: "red" },
+      });
+      return;
+    }
 
-  //   appendItem(formattedItems as any);
-  //   toast.success("Success", {
-  //     description: `${formattedItems.length} items imported successfully.`,
-  //   });
-  // };
+    appendItem(formattedItems as any);
+    toast.success("Success", {
+      description: `${formattedItems.length} items imported successfully.`,
+    });
+  };
 
-  if (formSettingsIsLoading) return <Spinner />;
+  if (formSettingsIsLoading) return <p>loading</p>;
 
   async function onSubmit(values: ItemFormValues) {
     const formData = new FormData();
@@ -198,15 +192,7 @@ export function EditQuotationForm({ data }: EditQuotationFormProps) {
                     <h2 className="text-lg font-semibold flex items-center gap-2">
                       <Package className="w-4 h-4" /> Items Required
                     </h2>
-                    {/* <Button
-                      type="button"
-                      variant="outline"
-                      onClick={() => exportItemsToXlsx(form.getValues("items"))}
-                    >
-                      Export to Excel
-                    </Button>
-
-                    <ImportDialog handleImportData={handleImportData} /> */}
+                    <ImportDialog handleImportData={handleImportData} />
                   </div>
 
                   {itemFields.map((itemField, itemIndex) => (

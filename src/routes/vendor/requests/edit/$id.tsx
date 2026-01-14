@@ -16,7 +16,7 @@ export const Route = createFileRoute("/vendor/requests/edit/$id")({
 
 function RouteComponent() {
   const id = Route.useLoaderData();
-  const { data, isLoading } = useQuotationID({ id, type: "vendor" });
+  const { data, isLoading } = useQuotationID({ id, type: "requestor" });
 
   //   if (isLoading) return <VendorDetailSkeleton />;
 

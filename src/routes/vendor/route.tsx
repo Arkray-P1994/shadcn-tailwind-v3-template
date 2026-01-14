@@ -9,7 +9,7 @@ export const Route = createFileRoute("/vendor")({
 function RequestorLayout() {
   return (
     <AuthProvider>
-      <RequireAuth allowedVendorTypes={["vendor"]}>
+      <RequireAuth allowedVendorTypes={["requestor"]}>
         <MainLayout>
           <Outlet />
         </MainLayout>
